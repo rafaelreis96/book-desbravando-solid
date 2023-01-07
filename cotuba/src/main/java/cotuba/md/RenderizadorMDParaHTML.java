@@ -1,17 +1,14 @@
 package cotuba.md;
 
-import cotuba.domain.Capitulo;
-import cotuba.plugin.Plugin;
-
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.Heading;
 import org.commonmark.node.Node;
@@ -19,6 +16,9 @@ import org.commonmark.node.Text;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Component;
+
+import cotuba.domain.Capitulo;
+import cotuba.plugin.AoRenderizarHTML;
 
 @Component
 public class RenderizadorMDParaHTML {
@@ -83,7 +83,7 @@ public class RenderizadorMDParaHTML {
 
 			capitulo.setConsteudoHTML(html);
 			
-			Plugin.renderizou(capitulo);
+			AoRenderizarHTML.renderizou(capitulo);
 
 		} catch (Exception ex) {
 			throw new IllegalStateException("Erro ao renderizar para HTML o arquivo " + arquivoMD, ex);
