@@ -21,18 +21,18 @@ public class GeradorEPUB implements GeradorEbook {
 	public void gera(Ebook ebook) {
         var epub = new Book();
         
-        for(Capitulo capitulo: ebook.getCapitulos()) {
-            String html = capitulo.getConteudoHTML();
-            epub.addSection(capitulo.getTitulo(), new Resource(html.getBytes(), MediatypeService.XHTML));
+        for(Capitulo capitulo: ebook.capitulos()) {
+            String html = capitulo.conteudoHTML();
+            epub.addSection(capitulo.titulo(), new Resource(html.getBytes(), MediatypeService.XHTML));
         }
         
         var epubWriter = new EpubWriter();
 
         try {
-            epubWriter.write(epub, Files.newOutputStream(ebook.getArquivoDeSaida()));
+            epubWriter.write(epub, Files.newOutputStream(ebook.arquivoDeSaida()));
         } catch (IOException ex) {
             throw new IllegalStateException(
-                    "Erro ao criar arquivo EPUB: " + ebook.getArquivoDeSaida().toAbsolutePath(), ex);
+                    "Erro ao criar arquivo EPUB: " + ebook.arquivoDeSaida().toAbsolutePath(), ex);
         }
     }
 

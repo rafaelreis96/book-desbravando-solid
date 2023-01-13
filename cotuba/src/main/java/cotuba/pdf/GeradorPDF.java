@@ -24,20 +24,20 @@ public class GeradorPDF implements GeradorEbook {
 
 	@Override
 	public void gera(Ebook ebook) {
-		try (var writer = new PdfWriter(Files.newOutputStream(ebook.getArquivoDeSaida()));
+		try (var writer = new PdfWriter(Files.newOutputStream(ebook.arquivoDeSaida()));
 				var pdf = new PdfDocument(writer);
 				var pdfDocument = new Document(pdf)) {
 
-			for (Capitulo capitulo : ebook.getCapitulos()) {
+			for (Capitulo capitulo : ebook.capitulos()) {
 
-				String html = capitulo.getConteudoHTML();
+				String html = capitulo.conteudoHTML();
 
 				List<IElement> convertToElements = HtmlConverter.convertToElements(html);
 				for (IElement element : convertToElements) {
 					pdfDocument.add((IBlockElement) element);
 				}
 
-				if (!ebook.isUltimoCapitulo(capitulo)) {
+				if (!ebook.ultimoCapitulo(capitulo)) {
 					// TODO: não adicionar página depois do último capítulo
 					pdfDocument.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 				}
@@ -45,7 +45,7 @@ public class GeradorPDF implements GeradorEbook {
 			}
 
 		} catch (Exception ex) {
-			throw new IllegalStateException("Erro ao criar arquivo PDF: " + ebook.getArquivoDeSaida().toAbsolutePath(),
+			throw new IllegalStateException("Erro ao criar arquivo PDF: " + ebook.arquivoDeSaida().toAbsolutePath(),
 					ex);
 		}
 	}

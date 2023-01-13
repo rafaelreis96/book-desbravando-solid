@@ -7,9 +7,9 @@ Estudo do livro Desbravando SOLID (Casa do Código)
 - :ballot_box_with_check: 4. Princípio da inversão de dependências (DIP): Dependências estáveis
 - :ballot_box_with_check: 5. Princípio aberto/fechado (OCP): Objetos flexíveis
 - :ballot_box_with_check: 6. Ocp potencializado: Plugins
-- :white_large_square: 7. Princípio de substituição de Liskov (LSP): Herança do jeito certo
-- :white_large_square: 8. Princípio da segregação de interfaces (LSP): Clientes separados, interfaces separadas
-- :white_large_square: 9. Um pouco de imutabilidade e encapsulamento
+- :ballot_box_with_check: 7. Princípio de substituição de Liskov (LSP): Herança do jeito certo
+- :ballot_box_with_check: 8. Princípio da segregação de interfaces (LSP): Clientes separados, interfaces separadas
+- :ballot_box_with_check: 9. Um pouco de imutabilidade e encapsulamento
 - :white_large_square: 10. Princípios de coesão e acoplamento de módulos
 - :white_large_square: 11. Além da linha de comando: O cotuba web
 - :white_large_square: 12. Módulos com o java platform module system (JPMS)

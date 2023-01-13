@@ -29,10 +29,7 @@ public class Cotuba {
 		var renderizador = new RenderizadorMDParaHTML();
 		List<Capitulo> capitulos = renderizador.renderiza(diretorioDosMD);
 
-		Ebook ebook = new Ebook();
-		ebook.setFormato(formato);
-		ebook.setArquivoDeSaida(arquivoDeSaida);
-		ebook.setCapitulo(capitulos);
+		Ebook ebook = new Ebook(formato, arquivoDeSaida, capitulos);
 		
 		GeradorEbook geradorEbook = geradoresEbook
 				.stream()

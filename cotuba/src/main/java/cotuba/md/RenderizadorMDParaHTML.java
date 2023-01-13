@@ -17,6 +17,7 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Component;
 
+import cotuba.builder.CapituloBuilder;
 import cotuba.domain.Capitulo;
 import cotuba.plugin.AoRenderizarHTML;
 
@@ -27,10 +28,10 @@ public class RenderizadorMDParaHTML {
 		return obtemArquivosMD(diretorioDosMD)
 				.stream()
 				.map(arquivoMD -> {
-					Capitulo capitulo = new Capitulo();
-					Node document = parseDoMD(arquivoMD, capitulo);
-					renderizaParaHTML(arquivoMD, capitulo, document);
-					return capitulo;
+					CapituloBuilder capituloBuilder = new CapituloBuilder();
+					Node document = parseDoMD(arquivoMD, capituloBuilder);
+					renderizaParaHTML(arquivoMD, capituloBuilder, document);
+					return capituloBuilder.constroi();
 				})
 				.collect(Collectors.toList());
 	}
@@ -49,7 +50,7 @@ public class RenderizadorMDParaHTML {
 
 	}
 
-	private Node parseDoMD(Path arquivoMD, Capitulo capitulo) {
+	private Node parseDoMD(Path arquivoMD, CapituloBuilder capituloBuilder) {
 		Parser parser = Parser.builder().build();
 		Node document = null;
 		try {
@@ -61,7 +62,7 @@ public class RenderizadorMDParaHTML {
 						// capítulo
 						String tituloDoCapitulo = ((Text) heading.getFirstChild()).getLiteral();
 						// TODO: usar título do capítulo
-						capitulo.setTitulo(tituloDoCapitulo);
+						capituloBuilder.comTitulo(tituloDoCapitulo);
 					} else if (heading.getLevel() == 2) {
 						// seção
 					} else if (heading.getLevel() == 3) {
@@ -76,14 +77,12 @@ public class RenderizadorMDParaHTML {
 		return document;
 	}
 
-	private void renderizaParaHTML(Path arquivoMD, Capitulo capitulo, Node document) {
+	private void renderizaParaHTML(Path arquivoMD, CapituloBuilder capituloBuilder, Node document) {
 		try {
 			HtmlRenderer renderer = HtmlRenderer.builder().build();
 			String html = renderer.render(document);
-
-			capitulo.setConsteudoHTML(html);
-			
-			AoRenderizarHTML.renderizou(capitulo);
+			capituloBuilder.comConteudoHTML(html);
+			String htmlModificado = AoRenderizarHTML.renderizou(html);
 
 		} catch (Exception ex) {
 			throw new IllegalStateException("Erro ao renderizar para HTML o arquivo " + arquivoMD, ex);

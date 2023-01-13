@@ -1,14 +1,13 @@
 package br.com.cognitio.estatisticas;
 
 import java.text.Normalizer;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import cotuba.domain.Capitulo;
+import cotuba.domain.Ebook;
 import cotuba.plugin.AoFinalizarGeracao;
-import cotuba.plugin.CapituloSoParaLeitura;
-import cotuba.plugin.EbookSoParaLeitura;
 
 public class CalculadoraDeEstatisticas implements AoFinalizarGeracao {
 
@@ -17,13 +16,13 @@ public class CalculadoraDeEstatisticas implements AoFinalizarGeracao {
 	}
 
 	@Override
-	public void aposGeracao(EbookSoParaLeitura ebook) {
+	public void aposGeracao(Ebook ebook) {
 		
 		var contagemDepalavras = new ContagemDePalavras();
 
 		
-		for(CapituloSoParaLeitura capitulo : ebook.getCapitulos()) {
-			String html = capitulo.getConteudoHTML();
+		for(Capitulo capitulo : ebook.capitulos()) {
+			String html = capitulo.conteudoHTML();
 			
 			Document doc = Jsoup.parse(html);
 			
@@ -48,13 +47,8 @@ public class CalculadoraDeEstatisticas implements AoFinalizarGeracao {
 			
 		}
 		
-		for(Map.Entry<String, Integer> contagem: contagemDepalavras.entrySet()) {
-			
-			String palavra = contagem.getKey();
-			
-			Integer ocorrencias = contagem.getValue();
-			
-			System.out.println(palavra + ": " + ocorrencias);
+		for(ContagemDePalavras.Contagem contagem : contagemDepalavras) {
+			System.out.println(contagem.palavra() + ": " + contagem.ocorrencias());
 		}
 		
 	}
